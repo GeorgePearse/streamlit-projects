@@ -1,4 +1,22 @@
 import streamlit as st
 
-st.markdown("# Main page 🎈")
-st.sidebar.markdown("# Main page 🎈")
+# just paste most of your medium arcticle here 
+st.markdown("""# Intro
+
+Data Analysis doesn't need to be hard. You can keep things very simple and still
+achieve all of the insights you need while moving fast. 
+
+This app serves as a simple demo of a lightweight approach to this. Add in 
+DBT and Dagster and you really do have all you need. pip installable business 
+analysis.
+
+## Features 
+- [ ] Connect to Snowflake
+- [ ] Integrate DBT / smoothly work with it 
+- [x] Save and load queries.
+- [ ] SSO with facebook / google login
+- [ ] Remove the select y axis and x axis in favour of using 1st for X etc.
+
+Written up in more depth here https://medium.com/p/cd6a9ba8a48f
+
+""")

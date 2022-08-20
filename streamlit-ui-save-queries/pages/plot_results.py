@@ -9,6 +9,13 @@ db_filename = st.selectbox('DB Filename', sqlite_dbs)
 analysis_conn = create_connection(db_filename)
 queries_conn = create_connection("queries.db")
 
+try: 
+    queries_conn.execute("""
+        create table queries (query_name varchar, query_contents varchar);
+    """
+    )
+except:
+    pass 
 
 query = queries_conn.execute('select * from queries')
 cols = [column[0] for column in query.description]
@@ -16,10 +23,12 @@ queries_df = pd.DataFrame.from_records(
     data = query.fetchall(), 
     columns = cols
 )
-st.dataframe(queries_df))
+st.dataframe(queries_df)
 
-query = st.selectbox('Query to Execute', queries_df)
+selected_query = st.selectbox('Query to Execute', list(queries_df['query_name']))
 
+selected_mask = (queries_df['query_name'] == selected_query)
+selected_query = queries_df[selected_mask]['query_contents'].iloc[0]
 
 plot_options = [
     'bar',
@@ -36,12 +45,13 @@ plot_type = st.selectbox(
 x_axis = st.text_input('X Axis')
 y_axis = st.text_input('Y Axis')
 
+save_analysis = st.checkbox('Save Analysis')
 submitted = st.button('Run Analysis')
 
 
 if submitted:
     try:
-        query = analysis_conn.execute(query)
+        query = analysis_conn.execute(selected_query)
         cols = [column[0] for column in query.description]
         results_df= pd.DataFrame.from_records(
             data = query.fetchall(), 
