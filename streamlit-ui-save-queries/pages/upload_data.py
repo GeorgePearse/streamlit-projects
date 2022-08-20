@@ -1,3 +1,8 @@
+import streamlit as st
+from utils import create_connection
+import pandas as pd
+
+
 st.markdown("# Upload Data")
 # https://discuss.streamlit.io/t/uploading-csv-and-excel-files/10866/2
 sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
