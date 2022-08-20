@@ -11,7 +11,8 @@ DBT and Dagster and you really do have all you need. pip installable business
 analysis.
 
 ## Features 
-- [ ] Connect to Snowflake
+- [ ] Connect to Snowflake.
+- [ ] Way to delete queries.
 - [ ] Integrate DBT / smoothly work with it 
 - [x] Save and load queries.
 - [ ] SSO with facebook / google login
