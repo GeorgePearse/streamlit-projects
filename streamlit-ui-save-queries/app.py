@@ -1,4 +1,9 @@
 import streamlit as st
+from utils import create_connection
+
+# make sure the db exists irrespective of where user comes from
+create_connection('core.db')
+
 
 # just paste most of your medium arcticle here 
 st.markdown("""# Intro
@@ -25,7 +30,9 @@ analysis.
 - [ ] Add method to save chart config (e.g. bar vs line vs scatter)
 
 
-
 A self-serve API. Written up in more depth here https://medium.com/p/cd6a9ba8a48f
+
+BI tools like Tableau, Metabase, Mode, Looker, lightdash (and more!) offer 
+a way to grab hold of data in different ways and illustrate its present impact.
 
 """)

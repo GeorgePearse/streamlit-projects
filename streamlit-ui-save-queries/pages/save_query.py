@@ -27,15 +27,14 @@ if run_query:
             columns = cols
         )
         st.dataframe(results_df)
-    except:
-        pass
+    except Exception as e:
+        st.write(e)
 
     if save_query:
 
         instantiate_queries_table()
         
         # the streamlit input box will add a bunch of backslash Ns 
-        
         query_contents = query_contents.replace('\n',' ')
         insert_statement = f"""
             insert into queries 
