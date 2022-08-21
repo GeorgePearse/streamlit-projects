@@ -1,18 +1,16 @@
 import streamlit as st 
-from utils import create_connection
+from utils import create_connection, instantiate_queries_table
 import pandas as pd
 import os
 
 
 st.markdown("# Run Query")
-sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
-db_filename = st.selectbox('DB Filename', sqlite_dbs)
 
 query_name = st.text_input('Query Name')
 st.write('When plotted the 1st column will be the x axis, 2nd will be the y axis')
 query_contents = st.text_area("SQL Query", height=100)
 
-analysis_conn = create_connection(db_filename)
+analysis_conn = create_connection('core.db')
 query_db_conn = create_connection('queries.db')
 
 
@@ -35,13 +33,7 @@ if run_query:
 
     if save_query:
 
-        try:
-            query_db_conn.execute("""
-                create table queries (query_name varchar, query_contents varchar)
-            """
-            )
-        except Exception as e:
-            pass # don't let user see this
+        instantiate_queries_table()
         
         # the streamlit input box will add a bunch of backslash Ns 
         

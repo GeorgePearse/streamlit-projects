@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Path, Query
-from utils import create_connection
+from utils import create_connection, sql_to_df
 import pandas as pd
 
 app = FastAPI()
@@ -7,17 +7,13 @@ app = FastAPI()
 
 @app.get("/queries/{query_name}")
 async def root(
-    query_name: str = Path(title="The ID of the item to get"),
+    query_name: str = Path(title="Query name of the query to run"),
 ):
     analysis_conn = create_connection("core.db")
     queries_conn = create_connection("queries.db")
-    query = queries_conn.execute(f"""
+    selected_query = queries_conn.execute(f"""
     select query_contents from queries where query_name = {query_name}
     """)  
-    cols = [column[0] for column in query.description]
-    results_df = pd.DataFrame.from_records(
-        data = query.fetchall(), 
-        columns = cols
-    )
+    results_df = sql_to_df(analysis_conn, selected_query)
     return results_df.to_json()
 

@@ -1,30 +1,13 @@
 import streamlit as st
 import plotly.express as px
-from utils import create_connection
+from utils import create_connection, sql_to_df
 import os
 import pandas as pd
 
-sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
-db_filename = st.selectbox('DB Filename', sqlite_dbs)
-analysis_conn = create_connection(db_filename)
+analysis_conn = create_connection('core.db')
 queries_conn = create_connection("queries.db")
 
-try: 
-    queries_conn.execute("""
-        create table queries (query_name varchar, query_contents varchar);
-    """
-    )
-except:
-    pass 
-
-query = queries_conn.execute('select * from queries')
-cols = [column[0] for column in query.description]
-queries_df = pd.DataFrame.from_records(
-    data = query.fetchall(), 
-    columns = cols
-)
-st.dataframe(queries_df)
-
+queries_df = sql_to_df(queries_conn, 'select * from queries')
 selected_query = st.selectbox('Query to Execute', list(queries_df['query_name']))
 
 selected_mask = (queries_df['query_name'] == selected_query)
@@ -46,12 +29,7 @@ submitted = st.button('Run Analysis')
 
 if submitted:
     try:
-        query = analysis_conn.execute(selected_query)
-        cols = [column[0] for column in query.description]
-        results_df= pd.DataFrame.from_records(
-            data = query.fetchall(), 
-            columns = cols
-        )
+        results_df = sql_to_df(analysis_conn, selected_query)
         st.dataframe(results_df)
 
         x_axis = list(results_df.columns)[0]

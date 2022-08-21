@@ -20,7 +20,10 @@ analysis.
 - [ ] Create API endpoint for each query
 - [ ] Open-source a way to create forms with streamlit
 - [ ] Apply the same process / system to your QDrant UI
+- [ ] Submit to Analytics Vidhya
+- [ ] Should have table name as query to follow single entity convention.
 
-Written up in more depth here https://medium.com/p/cd6a9ba8a48f
+
+A self-serve API. Written up in more depth here https://medium.com/p/cd6a9ba8a48f
 
 """)

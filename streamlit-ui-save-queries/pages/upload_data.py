@@ -5,10 +5,8 @@ import os
 
 st.markdown("# Upload Data")
 # https://discuss.streamlit.io/t/uploading-csv-and-excel-files/10866/2
-sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
-db_filename = st.selectbox('DB Filename', sqlite_dbs)
 table_name = st.text_input('Table Name to Insert')
-conn = create_connection(db_filename)
+conn = create_connection('core.db')
 uploaded_file = st.file_uploader('Choose a file')
 if uploaded_file is not None:
     #read csv
