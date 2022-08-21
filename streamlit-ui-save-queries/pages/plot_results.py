@@ -40,11 +40,6 @@ plot_type = st.selectbox(
     plot_options
 )
 
-# more fun if this is a selectbox from the query but quite awkward to get
-# that to work with streamlit
-x_axis = st.text_input('X Axis')
-y_axis = st.text_input('Y Axis')
-
 save_analysis = st.checkbox('Save Analysis')
 submitted = st.button('Run Analysis')
 
@@ -58,6 +53,9 @@ if submitted:
             columns = cols
         )
         st.dataframe(results_df)
+
+        x_axis = list(results_df.columns)[0]
+        y_axis = list(results_df.columns)[1]
 
         # TODO: will replace with a case statement soon
         if plot_type == 'bar':

@@ -9,6 +9,7 @@ sqlite_dbs = [file for file in os.listdir('.') if file.endswith('.db')]
 db_filename = st.selectbox('DB Filename', sqlite_dbs)
 
 query_name = st.text_input('Query Name')
+st.write('When plotted the 1st column will be the x axis, 2nd will be the y axis')
 query_contents = st.text_area("SQL Query", height=100)
 
 analysis_conn = create_connection(db_filename)

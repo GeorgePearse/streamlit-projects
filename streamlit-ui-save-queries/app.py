@@ -16,7 +16,7 @@ analysis.
 - [ ] Integrate DBT / smoothly work with it 
 - [x] Save and load queries.
 - [ ] SSO with facebook / google login
-- [ ] Remove the select y axis and x axis in favour of using 1st for X etc.
+- [x] Remove the select y axis and x axis in favour of using 1st for X etc.
 - [ ] Create API endpoint for each query
 - [ ] Open-source a way to create forms with streamlit
 - [ ] Apply the same process / system to your QDrant UI
