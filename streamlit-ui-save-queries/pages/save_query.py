@@ -50,3 +50,6 @@ if run_query:
         # I always forget to commit
         query_db_conn.commit()
         st.write(insert_response)
+
+        url = f"localhost:8000/query/{query_name}"
+        st.write(f'See API output at {url}')
