@@ -2,6 +2,7 @@ import os
 import streamlit as st
 import requests
 
+st.write("Check DB State")
 
 # determining the values of the parameters
 options = ["collections"]

@@ -6,6 +6,7 @@ import streamlit as st
 import sqlite3
 from pandas.core.frame import DataFrame
 import pandas as pd
+import logging
 
 
 def create_connection(db_file):
@@ -91,7 +92,7 @@ def get_image_direct_from_s3(bucket: str, key: str):
     return file_stream
 
 
-def get_s3_metadata(response_df: DataFrame) -> DataFrame:
+def get_s3_metadata(ml_dataset, response_df: DataFrame) -> DataFrame:
     s3_metadata = pd.DataFrame(
         ml_dataset.find(
             {"_id": {"$in": list(response_df["id"])}},
@@ -105,7 +106,9 @@ def get_s3_metadata(response_df: DataFrame) -> DataFrame:
     return new_response_df
 
 
-def prep_display_content(response_df):  # make sure things stay in sync if there's an error loading the png
+# TODO: This method of passing the mongo collection through is a mess and
+# shouldn't be needed, it's only needed for the s3 details at the minute
+def prep_display_content(ml_dataset, response_df):  # make sure things stay in sync if there's an error loading the png
     """Retrieves the image for each instance_uuid at the same time as parsing the
     relevant metadata so that they remain in sync ready for display
     (image retrieval can fail in some cases)
@@ -113,7 +116,7 @@ def prep_display_content(response_df):  # make sure things stay in sync if there
         response_df: Dataframe containing the Vector DB response
     """
     payload_columns = [col for col in response_df.columns.tolist() if "payload" in col]
-    response_df = get_s3_metadata(response_df)
+    response_df = get_s3_metadata(ml_dataset, response_df)
     metadata = response_df[payload_columns]
     pngs = []
     instance_uuids = []
@@ -125,9 +128,9 @@ def prep_display_content(response_df):  # make sure things stay in sync if there
             try:
                 key = key.replace("256", "1024")  # tmp fix
                 pngs.append(get_image_direct_from_s3(bucket, key))
-                logger.info(f"{bucket}/{key}")
+                logging.info(f"{bucket}/{key}")
                 instance_uuids.append(instance_uuid)
                 metadata_list.append(metadata.iloc[counter].astype(str))
             except Exception as e:
-                logger.debug(f"{e} :: {bucket}/{key}")
+                logging.debug(f"{e} :: {bucket}/{key}")
     return pngs, instance_uuids, metadata_list
