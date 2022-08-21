@@ -22,6 +22,8 @@ analysis.
 - [ ] Apply the same process / system to your QDrant UI
 - [ ] Submit to Analytics Vidhya
 - [ ] Should have table name as query to follow single entity convention.
+- [ ] Add method to save chart config (e.g. bar vs line vs scatter)
+
 
 
 A self-serve API. Written up in more depth here https://medium.com/p/cd6a9ba8a48f

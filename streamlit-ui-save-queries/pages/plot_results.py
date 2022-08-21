@@ -1,12 +1,14 @@
 import streamlit as st
 import plotly.express as px
-from utils import create_connection, sql_to_df
+from utils import create_connection, sql_to_df, instantiate_queries_table
 import os
 import pandas as pd
 
 analysis_conn = create_connection('core.db')
 queries_conn = create_connection("queries.db")
 
+# in case it doesn't already exist
+instantiate_queries_table()
 queries_df = sql_to_df(queries_conn, 'select * from queries')
 selected_query = st.selectbox('Query to Execute', list(queries_df['query_name']))
 
@@ -23,7 +25,6 @@ plot_type = st.selectbox(
     plot_options
 )
 
-save_analysis = st.checkbox('Save Analysis')
 submitted = st.button('Run Analysis')
 
 

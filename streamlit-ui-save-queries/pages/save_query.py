@@ -13,7 +13,6 @@ query_contents = st.text_area("SQL Query", height=100)
 analysis_conn = create_connection('core.db')
 query_db_conn = create_connection('queries.db')
 
-
 save_query = st.checkbox('Save Query')
 run_query = st.button('Run Query')
 
