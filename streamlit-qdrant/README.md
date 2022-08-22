@@ -57,10 +57,6 @@ from the post page
 ### Cons
 * The problem with this is that json is always a nightmare to store in databases, even if encoded and then decoded as a string. Turned out that really wasn't worth it.
 
-# Other comments to mention to Brian
-
-- Requested that QDrant add in their swagger UI as part of their default deployment.
-
 # Examples
 
 - The surgical clips
