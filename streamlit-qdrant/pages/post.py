@@ -10,7 +10,9 @@ from mongo import MongoConnection
 from utils import prep_display_content
 
 LOG_LEVEL = logging.DEBUG
-LOGFORMAT = "  %(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(message)s%(reset)s"
+LOGFORMAT = (
+    "  %(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(message)s%(reset)s"
+)
 from colorlog import ColoredFormatter
 
 logging.root.setLevel(LOG_LEVEL)
@@ -36,7 +38,10 @@ ml_dataset = MongoConnection(
 st.markdown("# Run and Save Queries")
 
 collections = [
-    record["name"] for record in requests.get(f"{vector_db_host}/collections").json()["result"]["collections"]
+    record["name"]
+    for record in requests.get(f"{vector_db_host}/collections").json()["result"][
+        "collections"
+    ]
 ]
 
 collection_name = st.selectbox("Collection", collections)
@@ -44,10 +49,12 @@ collection_name = st.selectbox("Collection", collections)
 query_name = st.text_input("Query Name (For Saving)")
 query_results = "./pages/results/"
 saved_queries = "./pages/saved_queries/"
+
 examples = os.listdir(saved_queries)
+examples_clean = [example.replace(".json", "") for example in examples]
 choice = st.selectbox("Examples", examples)
 
-with open(f"{saved_queries}/{choice}") as f:
+with open(f"{saved_queries}/{choice}.json") as f:
     selected_query = json.load(f)
     logger.info(f"{selected_query} worked")
 
