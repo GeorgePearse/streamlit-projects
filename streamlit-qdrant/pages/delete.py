@@ -1,11 +1,10 @@
-import streamlit as st
 import os
+import streamlit as st
 
 st.write("# Delete Queries")
 
 saved_queries = "./pages/saved_queries/"
 query_results = "./pages/results/"
-
 examples = os.listdir(saved_queries)
 file_to_delete = st.selectbox("Examples", examples)
 

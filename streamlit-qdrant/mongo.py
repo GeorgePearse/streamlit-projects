@@ -2,13 +2,7 @@ from pymongo import MongoClient
 
 
 class MongoConnection:
-    """
-    Extremely basic example https://docs.dagster.io/concepts/modes-resources
-    Example of SQLite warehouse https://docs.dagster.io/tutorial/advanced-tutorial/pipelines
-    Add code to warn you if there's no index on a key
-    The advantage of operating at connection level (over collection level)
-    is a simpler connection specification format.
-    """
+    """ """
 
     def __init__(self, user: str, password: str, host: str, port: str = "27017"):
         self._user = user

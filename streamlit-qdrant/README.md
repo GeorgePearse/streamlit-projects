@@ -12,6 +12,12 @@ and traditional heuristics.
 - [X] Summarize results
 - [X] Display images of the results
 - [ ] Save the queries to sqlite -> went with file instead, much easier to read
+- [ ] Tidy the code
+- [ ] Save some good example queries
+
+## Messy things to fix
+
+- [ ] Too much code duplication for things like getting the examples
 
 ## Stretch
 
@@ -30,6 +36,7 @@ from the post page
 # Caveats
 
 * I don't think the limits of what similarity and disimilarity can achieve are well understood, nor how these dynamics relate to model and problem types (e.g. object detection vs segmentation vs. classification vs.multi-label classification etc.).
+* Not sure if you would actually wrap the API in a real solution.
 
 # Choices
 

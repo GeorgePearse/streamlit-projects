@@ -1,15 +1,13 @@
 # From https://gist.github.com/robwalton/d985ffd0b3f319919f3d79da7873d762
 
 import json
-import pandas as pd
-from PIL import Image
-from typing import List
-import os
-import json
-from mongo import MongoConnection
-from utils import prep_display_content, get_image_direct_from_s3, get_s3_metadata, sql_to_df, instantiate_queries_table
-
 import logging
+import os
+
+import pandas as pd
+
+from mongo import MongoConnection
+from utils import prep_display_content
 
 LOG_LEVEL = logging.DEBUG
 LOGFORMAT = "  %(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(message)s%(reset)s"
@@ -23,15 +21,10 @@ stream.setFormatter(formatter)
 logger = logging.getLogger("pythonConfig")
 logger.setLevel(LOG_LEVEL)
 logger.addHandler(stream)
+
 import requests
 import streamlit as st
 
-from pandas.core.frame import DataFrame
-from utils import (
-    create_connection,
-    instantiate_queries_table,
-    get_image_direct_from_s3,
-)
 
 vector_db_host = os.environ.get("VECTOR_DB_HOST")
 ml_dataset = MongoConnection(
@@ -67,10 +60,6 @@ with col2:
     # edit as wanted
     string_query = st.text_area(label="query")
 
-
-vector_db_host = os.environ.get("VECTOR_DB_HOST")
-
-
 request = f"collections/{collection_name}/points/recommend"
 url = f"{vector_db_host}/{request}"
 
@@ -92,16 +81,14 @@ response = requests.post(url, json=data).json()
 
         with st.expander("JSON Response"):
             st.json(response)
-        try:
-            # for scroll endpoint
-            response_df = pd.json_normalize(response["result"]["points"])
-        except:
-            # for recommend endpoint
-            response_df = pd.json_normalize(response["result"])
 
+        response_df = pd.json_normalize(response["result"])
         st.dataframe(response_df)
 
-        pngs, instance_uuids, metadata_list = prep_display_content(ml_dataset, response_df)
+        pngs, instance_uuids, metadata_list = prep_display_content(
+            ml_dataset,
+            response_df,
+        )
         logger.info(len(pngs))
         skipping_elements = range(len(pngs) // 2)
         logger.info(list(skipping_elements))
@@ -109,15 +96,21 @@ response = requests.post(url, json=data).json()
             cols = st.columns(4)
             cols[0].image(pngs[counter * 2], caption=instance_uuids[counter * 2])
             cols[1].dataframe(data=metadata_list[counter * 2])
-            cols[2].image(pngs[(counter * 2) + 1], caption=instance_uuids[(counter * 2) + 1])
+            cols[2].image(
+                pngs[(counter * 2) + 1],
+                caption=instance_uuids[(counter * 2) + 1],
+            )
             cols[3].dataframe(data=metadata_list[(counter * 2) + 1])
 
         if save_query:
 
-            with open(f"./{saved_queries}/{query_name}.json", "w", encoding="utf-8") as f:
+            with open(
+                f"./{saved_queries}/{query_name}.json",
+                "w",
+                encoding="utf-8",
+            ) as f:
                 json.dump(data, f, ensure_ascii=False, indent=4)
 
-            # TODO: do you need to specify the encoding?
             response_df.to_csv(f"./{query_results}/{query_name}.csv")
 
         st.download_button(
