@@ -25,7 +25,6 @@ logger.addHandler(stream)
 import requests
 import streamlit as st
 
-
 vector_db_host = os.environ.get("VECTOR_DB_HOST")
 ml_dataset = MongoConnection(
     user=os.environ.get("ML_MONGO_USER"),
