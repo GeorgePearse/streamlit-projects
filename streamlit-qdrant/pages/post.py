@@ -14,6 +14,7 @@ LOGFORMAT = (
     "  %(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(message)s%(reset)s"
 )
 from colorlog import ColoredFormatter
+from config import vector_db_host, saved_queries_path, query_results_path, save_query
 
 logging.root.setLevel(LOG_LEVEL)
 formatter = ColoredFormatter(LOGFORMAT)
@@ -27,7 +28,6 @@ logger.addHandler(stream)
 import requests
 import streamlit as st
 
-vector_db_host = os.environ.get("VECTOR_DB_HOST")
 ml_dataset = MongoConnection(
     user=os.environ.get("ML_MONGO_USER"),
     password=os.environ.get("ML_MONGO_PASSWORD"),
@@ -45,16 +45,13 @@ collections = [
 ]
 
 collection_name = st.selectbox("Collection", collections)
-
 query_name = st.text_input("Query Name (For Saving)")
-query_results = "./pages/results/"
-saved_queries = "./pages/saved_queries/"
 
-examples = os.listdir(saved_queries)
+examples = os.listdir(saved_queries_path)
 examples_clean = [example.replace(".json", "") for example in examples]
 choice = st.selectbox("Examples", examples)
 
-with open(f"{saved_queries}/{choice}.json") as f:
+with open(f"{saved_queries_path}/{choice}.json") as f:
     selected_query = json.load(f)
     logger.info(f"{selected_query} worked")
 
@@ -69,7 +66,7 @@ with col2:
 request = f"collections/{collection_name}/points/recommend"
 url = f"{vector_db_host}/{request}"
 
-save_query = st.checkbox("Save Query")
+save_query_button = st.checkbox("Save Query")
 if st.button("Run Query"):
     # if outside of this button it will execute on initial load
     # have no string content, and error.
@@ -108,16 +105,14 @@ response = requests.post(url, json=data).json()
             )
             cols[3].dataframe(data=metadata_list[(counter * 2) + 1])
 
-        if save_query:
-
-            with open(
-                f"./{saved_queries}/{query_name}.json",
-                "w",
-                encoding="utf-8",
-            ) as f:
-                json.dump(data, f, ensure_ascii=False, indent=4)
-
-            response_df.to_csv(f"./{query_results}/{query_name}.csv")
+        if save_query_button:
+            save_query(
+                saved_queries_path,
+                query_results_path,
+                query_name,
+                data,
+                response_df,
+            )
 
         st.download_button(
             label="Download data as CSV",

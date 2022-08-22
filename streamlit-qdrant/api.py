@@ -4,6 +4,9 @@ import os
 import pandas as pd
 import requests
 from fastapi import FastAPI
+from config import (
+    vector_db_host,
+)
 
 app = FastAPI()
 
@@ -32,7 +35,6 @@ async def root(
         selected_query = json.load(f)
 
     collection_name = "cxr-metadata-cosine"
-    vector_db_host = os.environ.get("VECTOR_DB_HOST")
     request = f"collections/{collection_name}/points/recommend"
     url = f"{vector_db_host}/{request}"
     response = requests.post(url, json=selected_query).json()
