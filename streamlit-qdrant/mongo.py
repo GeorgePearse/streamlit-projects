@@ -2,8 +2,6 @@ from pymongo import MongoClient
 
 
 class MongoConnection:
-    """ """
-
     def __init__(self, user: str, password: str, host: str, port: str = "27017"):
         self._user = user
         self._password = password

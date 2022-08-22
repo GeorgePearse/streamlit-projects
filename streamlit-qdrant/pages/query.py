@@ -6,15 +6,23 @@ import os
 
 import pandas as pd
 
-from mongo import MongoConnection
-from utils import prep_display_content
+from utils import (
+    pick_query,
+    prep_display_content,
+    save_query,
+)
 
 LOG_LEVEL = logging.DEBUG
 LOGFORMAT = (
     "  %(log_color)s%(levelname)-8s%(reset)s | %(log_color)s%(message)s%(reset)s"
 )
 from colorlog import ColoredFormatter
-from config import vector_db_host, saved_queries_path, query_results_path, save_query
+from config import (
+    vector_db_host,
+    saved_queries_path,
+    query_results_path,
+    ml_dataset,
+)
 
 logging.root.setLevel(LOG_LEVEL)
 formatter = ColoredFormatter(LOGFORMAT)
@@ -27,12 +35,6 @@ logger.addHandler(stream)
 
 import requests
 import streamlit as st
-
-ml_dataset = MongoConnection(
-    user=os.environ.get("ML_MONGO_USER"),
-    password=os.environ.get("ML_MONGO_PASSWORD"),
-    host=os.environ.get("ML_MONGO_HOST"),
-).get_collection("ml-cxr-datalake")
 
 
 st.markdown("# Run and Save Queries")
@@ -47,9 +49,7 @@ collections = [
 collection_name = st.selectbox("Collection", collections)
 query_name = st.text_input("Query Name (For Saving)")
 
-examples = os.listdir(saved_queries_path)
-examples_clean = [example.replace(".json", "") for example in examples]
-choice = st.selectbox("Examples", examples)
+choice = pick_query(saved_queries_path)
 
 with open(f"{saved_queries_path}/{choice}.json") as f:
     selected_query = json.load(f)
@@ -61,7 +61,7 @@ with col1:
     st.write(selected_query)
 with col2:
     # edit as wanted
-    string_query = st.text_area(label="query")
+    string_query = st.text_area(label="query", height=400)
 
 request = f"collections/{collection_name}/points/recommend"
 url = f"{vector_db_host}/{request}"

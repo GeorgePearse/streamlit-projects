@@ -5,6 +5,13 @@ from pandas.core.frame import DataFrame
 import pandas as pd
 import logging
 import json
+import os
+
+
+def pick_query(saved_queries_path):
+    examples = os.listdir(saved_queries_path)
+    examples_clean = [example.replace(".json", "") for example in examples]
+    return st.selectbox("Examples", examples_clean)
 
 
 def save_query(

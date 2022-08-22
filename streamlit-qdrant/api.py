@@ -26,9 +26,6 @@ async def root(
     Args:
         query_name (str): Name of the QDrant query you want to execute
         json_format (str): Json format of the response
-
-    Returns:
-        _type_: _description_
     """
     saved_queries = "./pages/saved_queries/"
     with open(f"{saved_queries}/{query_name}.json") as f:
