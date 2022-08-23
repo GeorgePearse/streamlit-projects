@@ -22,16 +22,14 @@ plotly_code_name = st.text_input("Plotly Code Name")
 selected_mask = queries_df["query_name"] == selected_query
 selected_query = queries_df[selected_mask]["query_contents"].iloc[0]
 
+saved_plots = os.listdir("plotly_python")
+plotly_code_name = st.selectbox("Saved Plots")
+
+with open(f"./plotly_python/{plotly_code_name}.py") as f:
+    plotly_code = f.read()
+
 st.write("Plotly code here (example below)")
-st.code(
-    """
-px.bar(
-    results_df,
-    x="Hospital Name",
-    y="count(*)",
-)
-""",
-)
+st.code(plotly_code)
 
 plotly_code = st.text_area("Plotly Code")
 
