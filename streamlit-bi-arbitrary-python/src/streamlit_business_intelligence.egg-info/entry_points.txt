@@ -1,0 +1,2 @@
+[console_scripts]
+streamlit-business-intelligence = src.streamlit_business_intelligence:main
