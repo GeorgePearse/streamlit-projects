@@ -24,6 +24,7 @@ the same SQLite file behind the scenes.
 - [ ] Should have table name as query to follow single entity convention.
 - [ ] Add method to save chart config (e.g. bar vs line vs scatter)
 - [ ] Do the same for a Vector Database with json queries!
+- [ ] Integrate Git API, e.g. a structure to your branches, branch per graph with the name of the graph, auto-merged but labelled as "unverified"
 
 A self-serve API. Written up in more depth here https://medium.com/p/cd6a9ba8a48f
 
