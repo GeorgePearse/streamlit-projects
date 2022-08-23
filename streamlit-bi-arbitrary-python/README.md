@@ -35,3 +35,6 @@ Strict frameworks lead to greater productivity. Transformations in SQL,
 plotting in plotly.
 
 Filling the gap between jupyter notebooks and BI solutions.
+
+Everyone qualified to use this tool is qualified to contribute.
+The code is extremely simple.
