@@ -23,7 +23,8 @@ selected_mask = queries_df["query_name"] == selected_query
 selected_query = queries_df[selected_mask]["query_contents"].iloc[0]
 
 saved_plots = os.listdir("plotly_python")
-plotly_code_name = st.selectbox("Saved Plots")
+saved_plots_clean = [saved_plot.rstrip(".py") for saved_plot in saved_plots]
+plotly_code_name = st.selectbox("Saved Plots", saved_plots_clean)
 
 with open(f"./plotly_python/{plotly_code_name}.py") as f:
     plotly_code = f.read()
