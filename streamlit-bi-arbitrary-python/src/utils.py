@@ -19,6 +19,18 @@ def create_connection(db_file):
     return conn
 
 
+def save_plot(
+    plotly_code_name: str,
+    plotly_code: str,
+    saved_queries_path: str = "./plotly_python",
+):
+    with open(
+        f"./{saved_queries_path}/{plotly_code_name}.py",
+        "w",
+    ) as f:
+        f.write(plotly_code)
+
+
 def instantiate_queries_table():
     try:
         conn = create_connection("queries.db")

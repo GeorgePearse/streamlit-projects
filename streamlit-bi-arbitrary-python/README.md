@@ -27,9 +27,9 @@ the same SQLite file behind the scenes.
 
 A self-serve API. Written up in more depth here https://medium.com/p/cd6a9ba8a48f
 
-BI tools like Tableau, Metabase, Mode, Looker, lightdash (and more!) offer
-a way to grab hold of data in different ways and illustrate its present impact.
-
 ```
 uvicorn api:app --reload
 ```
+
+Strict frameworks lead to greater productivity. Transformations in SQL,
+plotting in plotly.
