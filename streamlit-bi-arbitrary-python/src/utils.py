@@ -22,7 +22,7 @@ def create_connection(db_file):
 def save_plot(
     plotly_code_name: str,
     plotly_code: str,
-    saved_queries_path: str = "./plotly_python",
+    saved_queries_path: str = "plotly_python",
 ):
     with open(
         f"./{saved_queries_path}/{plotly_code_name}.py",
