@@ -33,3 +33,5 @@ uvicorn api:app --reload
 
 Strict frameworks lead to greater productivity. Transformations in SQL,
 plotting in plotly.
+
+Filling the gap between jupyter notebooks and BI solutions.
